@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatbot-deployment
+spec:
+  replicas: 2        # This tells K8s to always keep 2 copies running!
+  selector:
+    matchLabels:
+      app: chatbot
+  template:
+    metadata:
+      labels:
+        app: chatbot
+    spec:
+      imagePullSecrets:       # <--- Add this section
+      - name: ecr-registry-key
+      containers:
+      - name: chatbot-container
+        image: 561730621443.dkr.ecr.us-east-2.amazonaws.com/hello-aws:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8501
+        env:
+        - name: API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: openai-key
+              key: API_KEY
