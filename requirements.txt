@@ -1,5 +1,5 @@
 streamlit
 langchain-openai
-openai
 langchain
 python-dotenv
+redis
